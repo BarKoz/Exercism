@@ -1,4 +1,7 @@
-import { colorCode, COLORS } from './resistor-color'
+import {
+  colorCode,
+  COLORS
+} from './resistor-color'
 
 describe('ResistorColor', () => {
   describe('Color codes', () => {
@@ -13,9 +16,12 @@ describe('ResistorColor', () => {
     test('Orange', () => {
       expect(colorCode("orange")).toEqual(3)
     })
+    test('Black with a capital letter', () => {
+      expect(colorCode("BLACK")).toEqual(0)
+    })
   })
 
   test('Colors', () => {
-    expect(COLORS).toEqual(["black","brown","red","orange","yellow","green","blue","violet","grey","white"])
+    expect(COLORS).toEqual(["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"])
   })
 })

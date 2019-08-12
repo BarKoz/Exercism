@@ -3,57 +3,28 @@ import {
 } from "@babel/types";
 
 export const translate = (RNAstr = '') => {
-  //variable to hold array with Codons/Protein
   let RNAWords = [];
-  // if RNA is empty brake loop and return empty string
-  if (RNAstr === '') {
-    return RNAWords;
+  const breakWords = ['UAA', 'UAG', 'UGA'];
+  const specialWords = {
+    'Methionine': ['AUG'],
+    'Phenylalanine': ['UUU', 'UUC'],
+    'Leucine': ['UUA', 'UUG'],
+    'Serine': ['UCU', 'UCC', 'UCA', 'UCG'],
+    'Tyrosine': ['UAU', 'UAC'],
+    'Cysteine': ['UGU', 'UGC'],
+    'Tryptophan': ['UGG']
   }
-  //a loop that creates three-letter words and translate Codon into Protein
   for (let index = 0; index < RNAstr.length; index += 3) {
-    //checking if the next protein is the stop protein if yes break loop
-    if (RNAstr[index] + RNAstr[index + 1] + RNAstr[index + 2] == 'UAA' || RNAstr[index] + RNAstr[index + 1] + RNAstr[index + 2] == 'UAG' || RNAstr[index] + RNAstr[index + 1] + RNAstr[index + 2] == 'UGA') {
+    const RNAWord = RNAstr.slice(index, index + 3);
+    if (breakWords.includes(RNAWord)) {
       break;
     } else {
-      RNAWords[index / 3] = (RNAstr[index] + RNAstr[index + 1] + RNAstr[index + 2]);
-      //switch translate Codons to Protein
-      switch (RNAWords[index / 3]) {
-        case 'AUG':
-          RNAWords[index / 3] = "Methionine";
-          break;
-        case 'UGG':
-          RNAWords[index / 3] = "Tryptophan";
-          break;
-        case 'UGU':
-        case 'UGC':
-          RNAWords[index / 3] = "Cysteine";
-          break;
-        case 'UAU':
-        case 'UAC':
-          RNAWords[index / 3] = "Tyrosine";
-          break;
-        case 'UCU':
-        case 'UCC':
-        case 'UCA':
-        case 'UCG':
-          RNAWords[index / 3] = "Serine";
-          break;
-        case 'UUA':
-        case 'UUG':
-          RNAWords[index / 3] = "Leucine";
-          break;
-        case 'UUU':
-        case 'UUC':
-          RNAWords[index / 3] = "Phenylalanine";
-          break;
-        default:
-          var err = true;
-          break;
+      const word = Object.keys(specialWords).find(key => specialWords[key].includes(RNAWord))
+      if (word === undefined) throw new Error("Invalid codon");
+      else {
+        RNAWords[index / 3] = word;
       }
     }
   }
-  //Return Protein translated
-  if (err) {
-    throw new Error("Invalid codon");
-  } else return RNAWords;
+  return RNAWords;
 }
