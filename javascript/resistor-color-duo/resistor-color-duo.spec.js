@@ -16,8 +16,7 @@ describe('Resistor Colors', () => {
   test('Orange and orange', () => {
     expect(value(['orange', 'orange'])).toEqual(33);
   });
-  test('violet and orange UpperCase', () => {
-    expect(value(['violet', 'ORANGE'])).toEqual(73);
+  test('GREY and BROWN UpperCase', () => {
+    expect(value(['GREY', 'BROWN'])).toEqual(81);
   });
-
 });

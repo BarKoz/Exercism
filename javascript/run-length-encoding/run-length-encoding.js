@@ -1,33 +1,30 @@
-import {
-  isNumber, isString
-} from "util";
-
 export const encode = encodeThis => {
-  let code = "";
-  let chartIndex = 0;
-  for (let index = 0; index <= encodeThis.length + 1; index++) {
-    let chart = encodeThis.charAt(index);
-    let chart1 = encodeThis.charAt(index + 1);
-    if (chart === chart1) chartIndex++;
-    else {
-      if (chartIndex > 0) {
-        code += ++chartIndex + chart;
-        chartIndex = 0;
-      } else code += chart;
+  let code = '';
+  let repeatTimes = 1;
+  for (let index = 0; index < encodeThis.length; index++) {
+    if (encodeThis.charAt(index) === encodeThis.charAt(index + 1)) {
+      repeatTimes++;
+    } else if (repeatTimes === 1) {
+      code += encodeThis.charAt(index)
+    } else {
+      code += repeatTimes + encodeThis.charAt(index);
+      repeatTimes = 1;
     }
   }
   return code;
 };
-
 export const decode = decodeThis => {
   let code = '';
+  let numberOfCharts = '';
   for (let index = 0; index < decodeThis.length; index++) {
-    let chart = decodeThis.charAt(index);
-    let chart1 = decodeThis.charAt(index+1);
-    if (isString(chart) && isString(chart1)) {code += chart+chart1;
-    index++;}
-
-    
+    if (Number(decodeThis.charAt(index))) {
+      numberOfCharts += decodeThis.charAt(index);
+    } else if (numberOfCharts !== '') {
+      code += decodeThis.charAt(index).repeat(numberOfCharts);
+      numberOfCharts = '';
+    } else {
+      code += decodeThis.charAt(index);
+    }
   }
   return code;
 };
