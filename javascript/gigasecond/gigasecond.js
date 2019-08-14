@@ -1,0 +1,1 @@
+export const gigasecond = inputdate => new Date(inputdate.setSeconds(inputdate.getSeconds() + 1000000000  -  (inputdate.getFullYear() > 1970 ? 0 :  3600)));

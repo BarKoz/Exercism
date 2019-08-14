@@ -1,30 +1,29 @@
-export const encode = encodeThis => {
+export const code = codeThis => {
   let code = '';
+  let numberOfCharts = '';
   let repeatTimes = 1;
-  for (let index = 0; index < encodeThis.length; index++) {
-    if (encodeThis.charAt(index) === encodeThis.charAt(index + 1)) {
+  if (codeThis.match(/[0-9]/)) {
+    for (let i = 0; i < codeThis.length; i++) {
+      if (Number(codeThis.charAt(i))) {
+        numberOfCharts += codeThis.charAt(i);
+      } else if (numberOfCharts !== '') {
+        code += codeThis.charAt(i).repeat(numberOfCharts);
+        numberOfCharts = '';
+      } else {
+        code += codeThis.charAt(i);
+      }
+    }
+    return code;
+  }
+  for (let i = 0; i < codeThis.length; i++) {
+    if (codeThis.charAt(i) === codeThis.charAt(i + 1)) {
       repeatTimes++;
     } else if (repeatTimes === 1) {
-      code += encodeThis.charAt(index)
+      code += codeThis.charAt(i)
     } else {
-      code += repeatTimes + encodeThis.charAt(index);
+      code += repeatTimes + codeThis.charAt(i);
       repeatTimes = 1;
     }
   }
   return code;
-};
-export const decode = decodeThis => {
-  let code = '';
-  let numberOfCharts = '';
-  for (let index = 0; index < decodeThis.length; index++) {
-    if (Number(decodeThis.charAt(index))) {
-      numberOfCharts += decodeThis.charAt(index);
-    } else if (numberOfCharts !== '') {
-      code += decodeThis.charAt(index).repeat(numberOfCharts);
-      numberOfCharts = '';
-    } else {
-      code += decodeThis.charAt(index);
-    }
-  }
-  return code;
-};
+}
